@@ -46,7 +46,7 @@ def _find_meta_root(path: str):
 
 
 class CvatBase(SubsetBase):
-    _SUPPORTED_SHAPES = ("box", "polygon", "polyline", "points")
+    _SUPPORTED_SHAPES = ("box", "polygon", "polyline", "points", 'ellipse')
 
     def __init__(
         self,
@@ -157,6 +157,18 @@ class CvatBase(SubsetBase):
                                     el.attrib["xbr"],
                                     el.attrib["ybr"],
                                 ],
+                            )
+                        )
+                    elif el.tag == 'ellipse':
+                        shape['points'] = list(
+                            map(
+                                float,
+                                [
+                                    el.attrib['cx'],
+                                    el.attrib['cy'],
+                                    el.attrib['rx'],
+                                    el.attrib['rx'],
+                                ]
                             )
                         )
                     else:
@@ -306,7 +318,20 @@ class CvatBase(SubsetBase):
                 attributes=attributes,
                 group=group,
             )
-
+        elif ann_type == 'ellipse':
+            x, y = points[0] - points[2], points[1] - points[3]
+            w, h = points[2] * 2, points[3] * 2
+            return Bbox(
+                x,
+                y,
+                w,
+                h,
+                label=label_id,
+                z_order=z_order,
+                id=ann_id,
+                attributes=attributes,
+                group=group,
+            )
         else:
             raise NotImplementedError("Unknown annotation type '%s'" % ann_type)
 
