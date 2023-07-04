@@ -51,15 +51,16 @@ class CvatBase(SubsetBase):
     def __init__(
         self,
         path: str,
+        images_dir: str,
         *,
         subset: Optional[str] = None,
         ctx: Optional[ImportContext] = None,
     ):
         assert osp.isfile(path), path
         rootpath = osp.dirname(path)
-        images_dir = ""
-        if osp.isdir(osp.join(rootpath, CvatPath.IMAGES_DIR)):
-            images_dir = osp.join(rootpath, CvatPath.IMAGES_DIR)
+        # images_dir = ""
+        # if osp.isdir(osp.join(rootpath, CvatPath.IMAGES_DIR)):
+        #     images_dir = osp.join(rootpath, CvatPath.IMAGES_DIR)
         self._images_dir = images_dir
         self._path = path
 
